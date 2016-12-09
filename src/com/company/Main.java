@@ -19,59 +19,66 @@ public class Main {
         System.out.println("\n inchel yntreyr nuyn banner linelu :)"); */
         Game game=new Game(new GameConfig());
         game.start();
-        game.getBattlefields();
-/*
         String myShot="";
         String hisShot="";
         String hisShotResult="";
         while(GameConfig.OPPONENTS_SHIPS != 0 && GameConfig.MY_SHIPS != 0){
+
             if(GameConfig.MY_TURN) {
+                game.getBattlefields();
                 String first;
                 int second;
                 serverSocket=new ServerSocket(8081);
-                socket=serverSocket.accept();
-                PrintWriter out=new PrintWriter(socket.getOutputStream(),true);
                 do{
                     System.out.println("Enter coordinates that you want to shot (example: a 1 )(a-j,1-10): ");
                     first=in.next();
                     second=in.nextInt();
                     System.out.println();
                 }
-                while(Character.toLowerCase(myShot.charAt(0))>='a' && Character.toLowerCase(myShot.charAt(0))<='j' && myShot.charAt(1)>0 && myShot.charAt(1)<=10);
+                while(Character.toLowerCase(first.charAt(0))>='a' && Character.toLowerCase(first.charAt(0))<='j' && second>0 && second<=10);
+                socket=serverSocket.accept();
+                PrintWriter out=new PrintWriter(socket.getOutputStream(),true);
                 second--;
+                socket=new Socket("10.100.25.211",8081);
+                BufferedReader input=new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
                 out.write(first+second+hisShotResult);
-                out.close();
+                while(!socket.isConnected()){}
                 socket.close();
                 serverSocket.close();
+                GameConfig.MY_TURN=false;
             }
             else{
-                socket=new Socket("127.0.0.1",8081);
+                game.getBattlefields();
+                while(true){
+                    try{
+                        socket=new Socket("10.100.25.211",8081);
+                        break;
+                    }
+                    catch(Exception e){
+
+                    }
+                }
+//                while(!socket.isConnected()){}
                 BufferedReader input=new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                while((hisShot=input.readLine())!=null){                }
+                while((hisShot=input.readLine())==null){}
                 hisShotResult=game.opponentShot(hisShot.substring(0,2));
                 myShot=hisShot.substring(2);
-                switch (myShot.length()){
-                    case(2):
-                        game.myShotResult(myShot.substring(0,2),false);
+                switch (myShot.length()) {
+                    case (2):
+                        game.myShotResult(myShot.substring(0, 2), false);
                         break;
-                    case(3):
-                        game.myShotResult(myShot.substring(0,2),true);
+                    case (3):
+                        game.myShotResult(myShot.substring(0, 2), true);
                         break;
-                    case(4):
-                        game.myShotResult(myShot.substring(0,2),true);
+                    case (4):
+                        game.myShotResult(myShot.substring(0, 2), true);
                         GameConfig.OPPONENTS_SHIPS--;
                         break;
-
-
                 }
-
+                GameConfig.MY_TURN=true;
             }
-
         }
-*/
-
-
     }
 
 

@@ -25,7 +25,7 @@ public class BattleField{
     }
     public void getBattleFields(){
         char temp='a';
-        System.out.println("        my battlefield                    his battlefield");
+        System.out.println("        my battlefield                      his battlefield");
         System.out.println("   1  2  3  4  5  6  7  8  9  10       1  2  3  4  5  6  7  8  9  10");
         for(int i=0;i<myBattlefield.length;i++){
             System.out.print(temp+" ");
