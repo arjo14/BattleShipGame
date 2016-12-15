@@ -9,7 +9,7 @@ public class Main {
     private static ServerSocket serverSocket;
     public static void main(String[] args) throws IOException {
 
-        Scanner in= new Scanner(System.in);
+        Scanner in = new Scanner(System.in);
         boolean flag;
      /*   int num;
         do {
@@ -17,13 +17,36 @@ public class Main {
             num = in.nextInt();
         }while(num >= 0 && num <= 2);
         System.out.println("\n inchel yntreyr nuyn banner linelu :)"); */
-        Game game=new Game(new GameConfig());
+        Game game = new Game(new GameConfig());
         game.start();
-        String myShot="";
-        String hisShot="";
-        String hisShotResult="";
-        while(GameConfig.OPPONENTS_SHIPS != 0 && GameConfig.MY_SHIPS != 0){
+        game.getBattlefields();
+         String myShot = "";
+        String hisShot = "";
+        String myShotResult = "";
 
+        while(true){
+            while (true) {
+                System.out.println("You have : "+GameConfig.MY_SHIPS +" ships");
+                System.out.println("He has : "+GameConfig.OPPONENTS_SHIPS +" ships");
+                System.out.println();
+                System.out.println();
+
+                System.out.println("Enter the  first coordinates for oneLength ship(Example : a1) : ");
+                myShot=in.next();
+                System.out.println();
+                if (myShot.charAt(0) >='a' && myShot.charAt(0) <= 'j' &&
+                        Integer.parseInt(myShot.substring(1)) > 0 &&
+                        Integer.parseInt(myShot.substring(1)) < 11) {
+                    myShot=myShot.charAt(0)+""+ (Integer.parseInt(myShot.substring(1))-1)+"";
+                    break;
+                }
+                System.out.println("Your entered numbers were wrong.");
+            }
+           hisShot=game.opponentShot(myShot+hisShot);
+
+            myShotResult=game.myShotResult();
+        }
+     /*    while(GameConfig.OPPONENTS_SHIPS != 0 && GameConfig.MY_SHIPS != 0){
             if(GameConfig.MY_TURN) {
                 game.getBattlefields();
                 String first;
@@ -79,8 +102,8 @@ public class Main {
                 GameConfig.MY_TURN=true;
             }
         }
+    }*/
     }
-
 
 }
 

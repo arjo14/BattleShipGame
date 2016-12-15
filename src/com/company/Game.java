@@ -10,33 +10,33 @@ public class Game {
     private int twoLength;
     private int oneLength;
     public GameConfig gc;
-    Scanner in= new Scanner(System.in);
+    Scanner in = new Scanner(System.in);
 
-    public Game(GameConfig gc){
-        this.gc=gc;
-        battlefield=new BattleField(gc);
-        fiveLength=1;
-        fourLength=2;
-        threeLength=3;
-        twoLength=4;
-        oneLength=5;
+    public Game(GameConfig gc) {
+        this.gc = gc;
+        battlefield = new BattleField(gc);
+        fiveLength = 1;
+        fourLength = 1;
+        threeLength = 1;
+        twoLength = 1;
+        oneLength = 1;
         battlefield.setBattleFields();
     }
 
-    public void start(){
+    public void start() {
         setMyBattlefield();
 
     }
-    public void myShot(String coord,boolean kpav){
-        if(kpav){
-            battlefield.setHisBattlefield(coord,'X');
-        }
-        else
-            battlefield.setHisBattlefield(coord,'O');
+
+    public void myShot(String coord, boolean kpav) {
+        if (kpav) {
+            battlefield.setHisBattlefield(coord, 'X');
+        } else
+            battlefield.setHisBattlefield(coord, 'O');
     }
 
     public void getBattlefields() {
-       battlefield.getBattleFields();
+        battlefield.getBattleFields();
     }
 
     private void setMyBattlefield() {
@@ -50,74 +50,62 @@ public class Game {
 
 
     private void setOneLengthShip() {
-        while(oneLength==0) {
+        while (oneLength != 0) {
             getBattlefields();
             int[] places = new int[4];
-            while(true){
-                System.out.println("Enter the  first coordinates for oneLength ship : ");
-                places[0]=in.nextInt();
-                places[1]=in.nextInt();
+            String firstPlace;
+            while (true) {
+                System.out.println("Enter the  first coordinates for oneLength ship(Example : a1) : ");
+                firstPlace=in.next();
                 System.out.println();
-                if(places[0] > 0 && places[0] < 11 && places[1] > 0 && places[1] < 11 ){
+                if (firstPlace.charAt(0) >='a' && firstPlace.charAt(0) <= 'j' && Integer.parseInt(firstPlace.substring(1)) > 0 && Integer.parseInt(firstPlace.substring(1)) < 11) {
+                    firstPlace=firstPlace.charAt(0)+""+ (Integer.parseInt(firstPlace.substring(1))-1)+"";
                     break;
                 }
                 System.out.println("Your entered numbers were wrong.");
             }
-            while(true){
-                System.out.print("Enter the  second coordinates for oneLength ship : ");
-                places[2]=in.nextInt();
-                places[3]=in.nextInt();
-                System.out.println();
-                if(places[2] > 0 && places[2] < 11 && places[3] > 0 && places[3] < 11 ){
-                    break;
-                }
-                System.out.println("Your entered numbers were wrong.");
-            }
-            if (places[0] > places[2]) {
-                places = swap1(places);
-            }
-            if (places[1] > places[3]) {
-                places = swap2(places);
-            }
+
+            convertStringToInt(places,firstPlace+firstPlace);
+
             boolean flag;
-            for(int i=0;i<4;i++){
-                places[i]--;
-            }
-            if(places[0]==places[2])
-                flag=battlefield.setShipToRight(places,1);
-            else
-                flag=battlefield.setShipToBottom(places,1);
-            if(flag){
+                flag = battlefield.setShipToBottom(places,1);
+
+            if (flag) {
                 oneLength--;
-                System.out.println("Entered coordinates were wrong");
             }
+            else
+                System.out.println("////////////////////////////////////////\nEntered coordinates were wrong\n////////////////////////////////////////");
+
         }
     }
 
     private void setTwoLengthShip() {
-        while(twoLength==0) {
+        while (twoLength != 0) {
             getBattlefields();
             int[] places = new int[4];
-            while(true){
-                System.out.print("Enter the  first coordinates for twoLength ship : ");
-                places[0]=in.nextInt();
-                places[1]=in.nextInt();
+            String firstPlace;
+            String secondPlace;
+            while (true) {
+                System.out.println("Enter the  first coordinates for twoLength ship(Example : a1) : ");
+                firstPlace=in.next();
                 System.out.println();
-                if(places[0] > 0 && places[0] < 11 && places[1] > 0 && places[1] < 11 ){
+                if (firstPlace.charAt(0) >='a' && firstPlace.charAt(0) <= 'j' && Integer.parseInt(firstPlace.substring(1)) > 0 && Integer.parseInt(firstPlace.substring(1)) < 11) {
+                    firstPlace=firstPlace.charAt(0)+""+ (Integer.parseInt(firstPlace.substring(1))-1)+"";
                     break;
                 }
                 System.out.println("Your entered numbers were wrong.");
             }
-            while(true){
-                System.out.print("Enter the  second coordinates for twoLength ship : ");
-                places[2]=in.nextInt();
-                places[3]=in.nextInt();
+            while (true) {
+                System.out.print("Enter the  second coordinates for twoLength ship (Example : a1) : ");
+                secondPlace=in.next();
                 System.out.println();
-                if(places[2] > 0 && places[2] < 11 && places[3] > 0 && places[3] < 11 ){
+                if (secondPlace.charAt(0) >='a' && secondPlace.charAt(0) <= 'j' && Integer.parseInt(secondPlace.substring(1)) > 0 && Integer.parseInt(secondPlace.substring(1)) < 11) {
+                    secondPlace=secondPlace.charAt(0)+""+ (Integer.parseInt(secondPlace.substring(1))-1)+"";
                     break;
                 }
                 System.out.println("Your entered numbers were wrong.");
             }
+            convertStringToInt(places,firstPlace+secondPlace);
             if (places[0] > places[2]) {
                 places = swap1(places);
             }
@@ -125,44 +113,46 @@ public class Game {
                 places = swap2(places);
             }
             boolean flag;
-            for(int i=0;i<4;i++){
-                places[i]--;
-            }
-            if(places[0]==places[2])
-                flag=battlefield.setShipToRight(places,2);
+            if (places[0] == places[2])
+                flag = battlefield.setShipToRight(places, 2);
             else
-                flag=battlefield.setShipToBottom(places,2);
-            if(flag){
+                flag = battlefield.setShipToBottom(places, 2);
+            if (flag) {
                 twoLength--;
-                System.out.println("Entered coordinates were wrong");
             }
+            else
+                System.out.println("////////////////////////////////////////\nEntered coordinates were wrong\n////////////////////////////////////////");
+
         }
     }
 
     private void setThreeLengthShip() {
-        while(threeLength==0) {
+        while (threeLength != 0) {
             getBattlefields();
             int[] places = new int[4];
-            while(true){
-                System.out.print("Enter the  first coordinates for threeLength ship : ");
-                places[0]=in.nextInt();
-                places[1]=in.nextInt();
+            String firstPlace;
+            String secondPlace;
+            while (true) {
+                System.out.println("Enter the  first coordinates for threeLength ship(Example : a1) : ");
+                firstPlace=in.next();
                 System.out.println();
-                if(places[0] > 0 && places[0] < 11 && places[1] > 0 && places[1] < 11 ){
+                if (firstPlace.charAt(0) >='a' && firstPlace.charAt(0) <= 'j' && Integer.parseInt(firstPlace.substring(1)) > 0 && Integer.parseInt(firstPlace.substring(1)) < 11) {
+                    firstPlace=firstPlace.charAt(0)+""+ (Integer.parseInt(firstPlace.substring(1))-1)+"";
                     break;
                 }
                 System.out.println("Your entered numbers were wrong.");
             }
-            while(true){
-                System.out.print("Enter the  second coordinates for threeLength ship : ");
-                places[2]=in.nextInt();
-                places[3]=in.nextInt();
+            while (true) {
+                System.out.print("Enter the  second coordinates for threeLength ship (Example : a1) : ");
+                secondPlace=in.next();
                 System.out.println();
-                if(places[2] > 0 && places[2] < 11 && places[3] > 0 && places[3] < 11 ){
+                if (secondPlace.charAt(0) >='a' && secondPlace.charAt(0) <= 'j' && Integer.parseInt(secondPlace.substring(1)) > 0 && Integer.parseInt(secondPlace.substring(1)) < 11) {
+                    secondPlace=secondPlace.charAt(0)+""+ (Integer.parseInt(secondPlace.substring(1))-1)+"";
                     break;
                 }
                 System.out.println("Your entered numbers were wrong.");
             }
+            convertStringToInt(places,firstPlace+secondPlace);
             if (places[0] > places[2]) {
                 places = swap1(places);
             }
@@ -170,44 +160,44 @@ public class Game {
                 places = swap2(places);
             }
             boolean flag;
-            for(int i=0;i<4;i++){
-                places[i]--;
-            }
-            if(places[0]==places[2])
-                flag=battlefield.setShipToRight(places,3);
+            if (places[0] == places[2])
+                flag = battlefield.setShipToRight(places, 3);
             else
-                flag=battlefield.setShipToBottom(places,3);
-            if(flag){
+                flag = battlefield.setShipToBottom(places, 3);
+            if (flag) {
                 threeLength--;
-                System.out.println("Entered coordinates were wrong");
-            }
+            } else
+                System.out.println("////////////////////////////////////////\nEntered coordinates were wrong\n////////////////////////////////////////");
         }
     }
 
     private void setFourLengthShip() {
-        while(fourLength==0) {
+        while(fourLength!=0) {
             getBattlefields();
             int[] places = new int[4];
-            while(true){
-                System.out.print("Enter the  first coordinates for fourLength ship : ");
-                places[0]=in.nextInt();
-                places[1]=in.nextInt();
+            String firstPlace;
+            String secondPlace;
+            while (true) {
+                System.out.println("Enter the  first coordinates for fourLength ship(Example : a1) : ");
+                firstPlace=in.next();
                 System.out.println();
-                if(places[0] > 0 && places[0] < 11 && places[1] > 0 && places[1] < 11 ){
+                if (firstPlace.charAt(0) >='a' && firstPlace.charAt(0) <= 'j' && Integer.parseInt(firstPlace.substring(1)) > 0 && Integer.parseInt(firstPlace.substring(1)) < 11) {
+                    firstPlace=firstPlace.charAt(0)+""+ (Integer.parseInt(firstPlace.substring(1))-1)+"";
                     break;
                 }
                 System.out.println("Your entered numbers were wrong.");
             }
-            while(true){
-                System.out.print("Enter the  last coordinates for fourLength ship : ");
-                places[2]=in.nextInt();
-                places[3]=in.nextInt();
+            while (true) {
+                System.out.print("Enter the  second coordinates for fourLength ship (Example : a1) : ");
+                secondPlace=in.next();
                 System.out.println();
-                if(places[2] > 0 && places[2] < 11 && places[3] > 0 && places[3] < 11 ){
+                if (secondPlace.charAt(0) >='a' && secondPlace.charAt(0) <= 'j' && Integer.parseInt(secondPlace.substring(1)) > 0 && Integer.parseInt(secondPlace.substring(1)) < 11) {
+                    secondPlace=secondPlace.charAt(0)+""+ (Integer.parseInt(secondPlace.substring(1))-1)+"";
                     break;
                 }
                 System.out.println("Your entered numbers were wrong.");
             }
+            convertStringToInt(places,firstPlace+secondPlace);
             if (places[0] > places[2]) {
                 places = swap1(places);
             }
@@ -215,44 +205,47 @@ public class Game {
                 places = swap2(places);
             }
             boolean flag;
-            for(int i=0;i<4;i++){
-                places[i]--;
-            }
             if(places[0]==places[2])
                 flag=battlefield.setShipToRight(places,4);
             else
                 flag=battlefield.setShipToBottom(places,4);
             if(flag){
                 fourLength--;
-                System.out.println("Entered coordinates were wrong");
             }
+            else
+                System.out.println("////////////////////////////////////////\nEntered coordinates were wrong\n////////////////////////////////////////");
+
+
         }
     }
 
     private void setFiveLengthShip() {
-        while(fiveLength==0) {
+        while(fiveLength!=0) {
             getBattlefields();
             int[] places = new int[4];
-            while(true){
-                System.out.print("Enter the  first coordinates for fiveLength ship : ");
-                places[0]=in.nextInt();
-                places[1]=in.nextInt();
+            String firstPlace;
+            String secondPlace;
+            while (true) {
+                System.out.println("Enter the  first coordinates for fiveLength ship(Example : a1) : ");
+                firstPlace=in.next();
                 System.out.println();
-                if(places[0] > 0 && places[0] < 11 && places[1] > 0 && places[1] < 11 ){
+                if (firstPlace.charAt(0) >='a' && firstPlace.charAt(0) <= 'j' && Integer.parseInt(firstPlace.substring(1)) > 0 && Integer.parseInt(firstPlace.substring(1)) < 11) {
+                    firstPlace=firstPlace.charAt(0)+""+ (Integer.parseInt(firstPlace.substring(1))-1)+"";
                     break;
                 }
                 System.out.println("Your entered numbers were wrong.");
             }
-            while(true){
-                System.out.print("Enter the  second coordinates for fiveLength ship : ");
-                places[2]=in.nextInt();
-                places[3]=in.nextInt();
+            while (true) {
+                System.out.print("Enter the  second coordinates for fiveLength ship (Example : a1) : ");
+                secondPlace=in.next();
                 System.out.println();
-                if(places[2] > 0 && places[2] < 11 && places[3] > 0 && places[3] < 11 ){
+                if (secondPlace.charAt(0) >='a' && secondPlace.charAt(0) <= 'j' && Integer.parseInt(secondPlace.substring(1)) > 0 && Integer.parseInt(secondPlace.substring(1)) < 11) {
+                    secondPlace=secondPlace.charAt(0)+""+ (Integer.parseInt(secondPlace.substring(1))-1)+"";
                     break;
                 }
                 System.out.println("Your entered numbers were wrong.");
             }
+            convertStringToInt(places,firstPlace+secondPlace);
             if (places[0] > places[2]) {
                 places = swap1(places);
             }
@@ -260,17 +253,15 @@ public class Game {
                 places = swap2(places);
             }
             boolean flag;
-            for(int i=0;i<4;i++){
-                places[i]--;
-            }
             if(places[0]==places[2])
                 flag=battlefield.setShipToRight(places,5);
             else
                 flag=battlefield.setShipToBottom(places,5);
             if(flag){
                 fiveLength--;
-                System.out.println("Entered coordinates were wrong");
             }
+            else
+                System.out.println("////////////////////////////////////////\nEntered coordinates were wrong\n////////////////////////////////////////");
         }
     }
 
@@ -310,4 +301,54 @@ public class Game {
             default:return (9+shot.charAt(1)+"");
         }
     }
+
+    private void convertStringToInt(int[] places, String s) {
+        switch(s.charAt(0)){
+            case('a'):places[0]=0;
+                break;
+            case('b'):places[0]=1;
+                break;
+            case('c'):places[0]=2;
+                break;
+            case('d'):places[0]=3;
+                break;
+            case('e'):places[0]=4;
+                break;
+            case('f'):places[0]=5;
+                break;
+            case('g'):places[0]=6;
+                break;
+            case('h'):places[0]=7;
+                break;
+            case('i'):places[0]=8;
+                break;
+            default:places[0]=9;
+                break;
+        }
+        places[1]=Integer.parseInt(s.substring(1,2));
+        switch(s.charAt(2)){
+            case('a'):places[2]=0;
+                break;
+            case('b'):places[2]=1;
+                break;
+            case('c'):places[2]=2;
+                break;
+            case('d'):places[2]=3;
+                break;
+            case('e'):places[2]=4;
+                break;
+            case('f'):places[2]=5;
+                break;
+            case('g'):places[2]=6;
+                break;
+            case('h'):places[2]=7;
+                break;
+            case('i'):places[2]=8;
+                break;
+            default:places[2]=9;
+                break;
+        }
+        places[3]=Integer.parseInt(s.substring(3,4));
+    }
+
 }

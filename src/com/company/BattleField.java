@@ -5,17 +5,15 @@ import java.util.Arrays;
 public class BattleField{
     private Character [][]myBattlefield;
     private Character [][]hisBattlefield;
-    private Ship[] ship=new Ship[15];
-    private int shipIndex;
+    private Ship[] ship=new Ship[5];
+    private int shipIndex=0;
 
 
     public BattleField(GameConfig gc) {
-        shipIndex=0;
+        for(int i=0;i<ship.length;i++)
+            ship[i]=new Ship();
         myBattlefield=new Character[gc.length][gc.width];
         hisBattlefield=new Character[gc.length][gc.width];
-    }
-    public BattleField(){
-        shipIndex=0;
     }
     public void setBattleFields(){
         for(int i=0;i<myBattlefield.length;i++) {
@@ -47,7 +45,7 @@ public class BattleField{
     public boolean setShipToBottom(int[] places,int size) {
         String place="";
         String nearPlaces="";
-        if(places[2]-places[0]!=size)
+        if(places[2]-places[0]!=size-1)
             return false;
 
         for(int i = 0;i < size;i++) {
@@ -58,46 +56,56 @@ public class BattleField{
         for(int i = 0;i < size;i++) {
                 myBattlefield[places[0] + i][places[1]] = '+';
                 if (places[1] > 0) {
+                    if(myBattlefield[places[0] + i][places[1] - 1] != '+')
                         myBattlefield[places[0] + i][places[1] - 1] = 'O';
                         nearPlaces+=(places[0]+i)+""+(places[1]-1);
                     if (places[0] > 0) {
+                        if(myBattlefield[places[0] + i - 1][places[1] - 1] != '+')
                             myBattlefield[places[0] + i - 1][places[1] - 1] = 'O';
                             nearPlaces+=(places[0]+i-1)+""+(places[1]-1);
                     }
                 }
                 if (places[0] > 0) {
+                    if(myBattlefield[places[0] + i-1][places[1] ] != '+')
                         myBattlefield[places[0] + i - 1][places[1]] = 'O';
                         nearPlaces+=(places[0]+i-1)+""+(places[1]);
                 }
 
 
             if (places[1] < 9) {
+                if(myBattlefield[places[0] + i][places[1] + 1] != '+')
                     myBattlefield[places[0] + i][places[1] + 1] = 'O';
                     nearPlaces+=(places[0]+i)+""+(places[1]+1);
                 if (places[0] > 0) {
+                    if(myBattlefield[places[0] + i-1][places[1] + 1] != '+')
                         myBattlefield[places[0] + i - 1][places[1] + 1] = 'O';
                         nearPlaces+=(places[0]+i-1)+""+(places[1]+1);
                 }
             }
             if(i == (size - 1)){
-                if(places[0] < 9){
+                if(places[2] < 9){
                         nearPlaces+=(places[0]+i+1)+""+(places[1]);
+                    if(myBattlefield[places[0] + i + 1][places[1] ] != '+')
                         myBattlefield[places[0] + i + 1 ][places[1]] = 'O';
                     if(places[1]>0) {
+                        if(myBattlefield[places[0] + i+1][places[1] - 1] != '+')
                         myBattlefield[places[0] + i + 1][places[1] - 1] = 'O';
                         nearPlaces+=(places[0]+i+1)+""+(places[1]-1);
                     }
                 }
                 if(places[1]>0) {
+                    if(myBattlefield[places[0] + i][places[1] - 1] != '+')
                         myBattlefield[places[0] + i][places[1] - 1] = 'O';
                         nearPlaces+=(places[0]+i)+""+(places[1]-1);
                 }
                  if(places[1]<9){
                         nearPlaces+=(places[0]+i)+""+(places[1]+1);
+                     if(myBattlefield[places[0] + i][places[1] + 1] != '+')
                          myBattlefield[places[0] + i ][places[1] + 1] = 'O';
 
-                    if(places[0]<9){
+                    if(places[2]<9){
                             nearPlaces+=(places[0]+i+1)+""+(places[1]+1);
+                        if(myBattlefield[places[0] + i+1][places[1] + 1] != '+')
                             myBattlefield[places[0] + i + 1][places[1] + 1] = 'O';
                     }
                  }
@@ -106,13 +114,14 @@ public class BattleField{
             place += places[1];
         }
         ship[shipIndex].setCoordinates(place,nearPlaces);
+        shipIndex++;
         return true;
     }
 
     public boolean setShipToRight(int[] places,int size) {
         String place="";
         String nearPlaces="";
-        if(places[3]-places[1]!=size)
+        if(places[3]-places[1]!=size-1)
             return false;
 
         for(int i = 0;i < size;i++) {
@@ -123,39 +132,52 @@ public class BattleField{
             for(int i = 0;i < size;i++){
                 myBattlefield[places[0]][places[1] + i] = '+';
                     if(places[0]>0) {
+                        if(myBattlefield[places[0] - 1][places[1] + i] != '+')
                             myBattlefield[places[0] - 1][places[1] + i] = 'O';
                             nearPlaces+=(places[0]-1)+""+(places[1]+i);
                     }
                     if(places[1]>0){
-                                myBattlefield[places[0]][places[1] + i - 1] = 'O';
+                        if(myBattlefield[places[0]][places[1] + i -1] != '+')
+                            myBattlefield[places[0]][places[1] + i - 1] = 'O';
                                 nearPlaces+=places[0]+""+(places[1]+i-1);
                     }
                     if(places[1]>0 && places[0]>0){
+                        if(myBattlefield[places[0] - 1][places[1] + i -1] != '+')
                             myBattlefield[places[0] - 1][places[1] + i - 1] = 'O';
                             nearPlaces+=(places[0]-1)+""+(places[1]+i-1);
                     }
                     if(places[0]<9){
+                        if(myBattlefield[places[0] + 1][places[1] + i] != '+') {
                             myBattlefield[places[0] + 1][places[1] + i] = 'O';
-                            nearPlaces+=(places[0]+1)+""+(places[1]+i);
+                            nearPlaces += (places[0] + 1) + "" + (places[1] + i);
+                        }
 
                         if(places[1]>0){
+                            if(myBattlefield[places[0] + 1][places[1] + i-1] != '+') {
                                 myBattlefield[places[0] + 1][places[1] + i - 1] = 'O';
-                                nearPlaces+=(places[0]+1)+""+(places[1]+i-1);
+                                nearPlaces += (places[0] + 1) + "" + (places[1] + i - 1);
+                            }
                         }
                     }
                     if(i==(size-1)) {
-                        if (places[1] < 9) {
+                        if (places[1]+i < 9) {
+                            if(myBattlefield[places[0]][places[1] + i +1] != '+') {
                                 myBattlefield[places[0]][places[1] + i + 1] = 'O';
-                                nearPlaces+=(places[0])+""+(places[1]+i+1);
+                                nearPlaces += (places[0]) + "" + (places[1] + i + 1);
+                            }
 
                             if (places[0] < 9) {
+                                if(myBattlefield[places[0] + 1][places[1] + i +1] != '+') {
                                     myBattlefield[places[0] + 1][places[1] + i + 1] = 'O';
-                                    nearPlaces+=(places[0]+1)+""+(places[1]+i+1);
+                                    nearPlaces += (places[0] + 1) + "" + (places[1] + i + 1);
+                                }
 
                             }
                             if(places[0]>0){
+                                if(myBattlefield[places[0] - 1][places[1] + i + 1] != '+') {
                                     myBattlefield[places[0] - 1][places[1] + i + 1] = 'O';
-                                    nearPlaces+=(places[0]-1)+""+(places[1]+i+1);
+                                    nearPlaces += (places[0] - 1) + "" + (places[1] + i + 1);
+                                }
                             }
                         }
                     }
@@ -163,6 +185,7 @@ public class BattleField{
                 place+=(places[1]+i);
         }
         ship[shipIndex].setCoordinates(place,nearPlaces);
+        shipIndex++;
         return true;
     }
 
@@ -203,4 +226,6 @@ public class BattleField{
         else
             hisBattlefield[shot.charAt(0)][shot.charAt(1)]='O';
     }
+
+
 }
